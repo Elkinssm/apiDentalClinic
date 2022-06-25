@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 
-@Service
+
 public interface IPatientService {
 
     Set<PatientDTO> findAllPatients();
@@ -15,7 +15,7 @@ public interface IPatientService {
 
     void savePatient(PatientDTO newPatientDTO);
 
-    void deleteTurn(Long id);
+    void deletePatient(Long id);
 
-    void updateTurn(PatientDTO newPatientDTO);
+    void updatePatient(PatientDTO newPatientDTO);
 }

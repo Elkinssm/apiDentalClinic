@@ -1,6 +1,7 @@
 package com.dh.apiDentalClinic.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,11 +20,12 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String surName;
+    private String lastName;
     private String DNI;
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDate admissionsDate;
+   // @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
+    private String admissionsDate;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Address address;
 }

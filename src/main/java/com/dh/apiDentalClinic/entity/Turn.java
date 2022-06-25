@@ -5,8 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.Date;
 
 @ToString
 @Setter
@@ -20,9 +18,11 @@ public class Turn {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dentist_id")
+    @ToString.Exclude
     private Dentist dentist;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
+    @ToString.Exclude
     private Patient patient;
-    private LocalDate date;
+    private String date;
 }

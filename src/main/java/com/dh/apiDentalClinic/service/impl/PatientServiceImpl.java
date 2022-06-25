@@ -4,6 +4,7 @@ import com.dh.apiDentalClinic.DTO.PatientDTO;
 import com.dh.apiDentalClinic.entity.Patient;
 import com.dh.apiDentalClinic.repository.IPatientRepository;
 import com.dh.apiDentalClinic.service.IPatientService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class PatientServiceImpl implements IPatientService {
         List<Patient> patients = patientRepository.findAll();
         Set<PatientDTO> patientDTO = new HashSet<>();
 
+        //List<PatientDTO> patientDto= mapper.convertValue (<List<Patient> , List< PatientDTO.class>>(patients))
+
         for (Patient patient : patients) {
             patientDTO.add(mapper.convertValue(patient, PatientDTO.class));
         }
@@ -55,12 +58,12 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     @Override
-    public void deleteTurn(Long id) {
+    public void deletePatient(Long id) {
         patientRepository.deleteById(id);
     }
 
     @Override
-    public void updateTurn(PatientDTO newPatientDTO) {
+    public void updatePatient(PatientDTO newPatientDTO) {
         saveMethod(newPatientDTO);
     }
 }

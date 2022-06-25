@@ -7,6 +7,7 @@ import com.dh.apiDentalClinic.entity.Turn;
 import com.dh.apiDentalClinic.repository.IPatientRepository;
 import com.dh.apiDentalClinic.repository.ITurnRepository;
 import com.dh.apiDentalClinic.service.ITurnService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
