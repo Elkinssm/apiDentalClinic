@@ -1,7 +1,10 @@
 package com.dh.apiDentalClinic.service;
 
+import com.dh.apiDentalClinic.DTO.AddressDTO;
+import com.dh.apiDentalClinic.DTO.TurnDTO;
 import com.dh.apiDentalClinic.entity.Address;
 import com.dh.apiDentalClinic.entity.Patient;
+import com.dh.apiDentalClinic.entity.Turn;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,13 +13,13 @@ import java.util.Set;
 @Service
 public interface IAddressService {
 
-    Set<Address> findAllAddress();
+    Set<AddressDTO> findAllAddress();
 
-    Optional<Address> findAddressById(Long id);
+    Optional<AddressDTO> findAddressById(Long id);
 
-    Address saveAddress(Address newAddress);
+    void saveTurn(AddressDTO newAddressDTO);
 
-    String deleteAddress(Long id);
+    void deleteTurn(Long id);
 
-    String updateAddress(Address newAddress);
+    void updateTurn(AddressDTO newAddressDTO);
 }

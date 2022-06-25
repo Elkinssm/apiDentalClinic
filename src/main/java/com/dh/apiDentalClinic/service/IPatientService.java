@@ -1,6 +1,6 @@
 package com.dh.apiDentalClinic.service;
 
-import com.dh.apiDentalClinic.entity.Patient;
+import com.dh.apiDentalClinic.DTO.PatientDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -9,13 +9,13 @@ import java.util.Set;
 @Service
 public interface IPatientService {
 
-    Set<Patient> findAllPatients();
+    Set<PatientDTO> findAllPatients();
 
-    Optional<Patient> findPatientById(Long id);
+    Optional<PatientDTO> findPatientById(Long id);
 
-    Patient savePatient(Patient newPatient);
+    void savePatient(PatientDTO newPatientDTO);
 
-    String deletePatient(Long id);
+    void deleteTurn(Long id);
 
-    String updatePatient(Patient newPatient);
+    void updateTurn(PatientDTO newPatientDTO);
 }

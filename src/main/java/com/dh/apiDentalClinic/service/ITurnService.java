@@ -1,7 +1,6 @@
 package com.dh.apiDentalClinic.service;
 
-import com.dh.apiDentalClinic.entity.Patient;
-import com.dh.apiDentalClinic.entity.Turn;
+import com.dh.apiDentalClinic.DTO.TurnDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,14 +9,14 @@ import java.util.Set;
 @Service
 public interface ITurnService {
 
-    Set<Turn> findAllTurns();
+    Set<TurnDTO> findAllTurns();
 
-    Optional<Patient> findTurnsById(Long id);
+    Optional<TurnDTO> findTurnById(Long id);
 
-    Turn savePatient(Turn newTurn);
+    void saveTurn(TurnDTO newTurnDTO);
 
-    String deleteTurn(Long id);
+    void deleteTurn(Long id);
 
-    String updateTurn(Turn newTurn);
+    void updateTurn(TurnDTO newTurnDTO);
 
 }

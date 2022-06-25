@@ -11,20 +11,4 @@ import java.util.Set;
 @RequestMapping("/patient")
 public class PatientController {
 
-    private PatientServiceImpl patientServiceimpl;
-
-    @Autowired
-    public PatientController(PatientServiceImpl patientServiceimpl) {
-        this.patientServiceimpl = patientServiceimpl;
-    }
-
-    @GetMapping()
-    public Set<Patient> getAllPatients() {
-        return patientServiceimpl.findAllPatients();
-    }
-
-    @PostMapping("/add")
-    public Patient addPatient(@RequestBody Patient patient) {
-        return patientServiceimpl.savePatient(patient);
-    }
 }
