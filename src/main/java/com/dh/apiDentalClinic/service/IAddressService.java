@@ -5,21 +5,23 @@ import com.dh.apiDentalClinic.DTO.TurnDTO;
 import com.dh.apiDentalClinic.entity.Address;
 import com.dh.apiDentalClinic.entity.Patient;
 import com.dh.apiDentalClinic.entity.Turn;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+
 public interface IAddressService {
 
     Set<AddressDTO> findAllAddress();
 
     Optional<AddressDTO> findAddressById(Long id);
 
-    void saveTurn(AddressDTO newAddressDTO);
+    void saveAdrress(AddressDTO newAddressDTO);
 
-    void deleteTurn(Long id);
+    void deleteAdrress(Long id);
 
-    void updateTurn(AddressDTO newAddressDTO);
+    void updateAdrress(AddressDTO newAddressDTO);
 }

@@ -1,30 +1,45 @@
 package com.dh.apiDentalClinic.controller;
 
-import com.dh.apiDentalClinic.entity.Address;
-import com.dh.apiDentalClinic.service.impl.AddressServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.dh.apiDentalClinic.DTO.AddressDTO;
+import com.dh.apiDentalClinic.service.IAddressService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.Optional;
 
+@RequestMapping("/address")
+@RestController
 public class AddressController {
-    private AddressServiceImpl addressServiceimpl;
 
-    @Autowired
-    public AddressController(AddressServiceImpl addressServiceimpl) {
-        this.addressServiceimpl = addressServiceimpl;
+    IAddressService addressService;
+
+    @GetMapping("/all")
+    public Collection<AddressDTO> getAllAddress() {
+        return addressService.findAllAddress();
     }
 
-
-    @GetMapping()
-    public Set<Address> getAllAddress() {
-        return addressServiceimpl.findAllAddress();
+    @GetMapping("/{id}")
+    public Optional<AddressDTO> getAddress(@PathVariable Long id) {
+        return addressService.findAddressById(id);
     }
 
     @PostMapping("/add")
-    public Address addAddress(@RequestBody Address address) {
-        return addressServiceimpl.saveAddress(address);
+    public ResponseEntity<?> saveAddress(@RequestBody AddressDTO addressDTO) {
+        addressService.saveAdrress(addressDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateAddress(@RequestBody AddressDTO addressDTO) {
+        addressService.updateAdrress(addressDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteAddress(@PathVariable Long id) {
+        addressService.deleteAdrress(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

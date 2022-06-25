@@ -48,17 +48,17 @@ public class AddressServiceImpl implements IAddressService {
     }
 
     @Override
-    public void saveTurn(AddressDTO newAddressDTO) {
+    public void saveAdrress(AddressDTO newAddressDTO) {
         saveMethod(newAddressDTO);
     }
 
     @Override
-    public void deleteTurn(Long id) {
+    public void deleteAdrress(Long id) {
         addressRepository.deleteById(id);
     }
 
     @Override
-    public void updateTurn(AddressDTO newAddressDTO) {
+    public void updateAdrress(AddressDTO newAddressDTO) {
         saveMethod(newAddressDTO);
     }
 }
