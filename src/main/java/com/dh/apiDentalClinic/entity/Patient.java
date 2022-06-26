@@ -1,13 +1,13 @@
 package com.dh.apiDentalClinic.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 @ToString
@@ -15,6 +15,8 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @Table(name = "patients")
+
+@JsonIgnoreProperties(value={"hibernateLazyInitializer"})
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

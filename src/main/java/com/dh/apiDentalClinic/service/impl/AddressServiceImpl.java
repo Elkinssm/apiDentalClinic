@@ -8,10 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AddressServiceImpl implements IAddressService {
@@ -28,7 +25,7 @@ public class AddressServiceImpl implements IAddressService {
     }
 
     @Override
-    public Set<AddressDTO> findAllAddress() {
+    public Collection<AddressDTO> findAllAddress() {
         List<Address> addresses = addressRepository.findAll();
         Set<AddressDTO> addressDTO = new HashSet<>();
         for (Address address : addresses) {

@@ -1,18 +1,17 @@
 package com.dh.apiDentalClinic.service.impl;
 
+import com.dh.apiDentalClinic.DTO.AddressDTO;
 import com.dh.apiDentalClinic.DTO.PatientDTO;
+import com.dh.apiDentalClinic.entity.Address;
 import com.dh.apiDentalClinic.entity.Patient;
+import com.dh.apiDentalClinic.repository.IAddressRepository;
 import com.dh.apiDentalClinic.repository.IPatientRepository;
 import com.dh.apiDentalClinic.service.IPatientService;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PatientServiceImpl implements IPatientService {
@@ -21,24 +20,41 @@ public class PatientServiceImpl implements IPatientService {
     private IPatientRepository patientRepository;
 
     @Autowired
+    private IAddressRepository addressRepository;
+
+    @Autowired
     ObjectMapper mapper;
 
     public void saveMethod(PatientDTO patientDTO) {
+        AddressDTO addressdto = patientDTO.getAddress();
         Patient patient = mapper.convertValue(patientDTO, Patient.class);
+        patient.setAddress(null);
         patientRepository.save(patient);
+        Address address = mapper.convertValue(addressdto, Address.class);
+        address.setId(patient.getId());
+        addressRepository.save(address);
+
     }
 
+
     @Override
-    public Set<PatientDTO> findAllPatients() {
+    public Collection<PatientDTO> findAllPatients() {
         List<Patient> patients = patientRepository.findAll();
-        Set<PatientDTO> patientDTO = new HashSet<>();
+        Set<PatientDTO> patientsDTO = new HashSet<>();
+
 
         //List<PatientDTO> patientDto= mapper.convertValue (<List<Patient> , List< PatientDTO.class>>(patients))
 
         for (Patient patient : patients) {
-            patientDTO.add(mapper.convertValue(patient, PatientDTO.class));
+            Optional<Address> addressOptional = addressRepository.findById(patient.getId());
+//            if (addressOptional.isPresent()) {
+//                patient.setAddress(addressOptional.get());
+//            }
+            addressOptional.ifPresent(patient::setAddress);
+
+            patientsDTO.add(mapper.convertValue(patient, PatientDTO.class));
         }
-        return patientDTO;
+        return patientsDTO;
 
     }
 

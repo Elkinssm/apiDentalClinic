@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+
 public class PatientDTO {
 
     private Long id;
@@ -18,6 +19,6 @@ public class PatientDTO {
     private String DNI;
     //@JsonFormat(pattern = "dd-MM-yyyy")
     private String admissionsDate;
-    private Address address;
+    private AddressDTO address;
 
 }

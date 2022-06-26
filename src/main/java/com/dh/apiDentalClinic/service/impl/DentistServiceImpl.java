@@ -8,10 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class DentistServiceImpl implements IDentistService {
@@ -28,7 +25,7 @@ public class DentistServiceImpl implements IDentistService {
     }
 
     @Override
-    public Set<DentistDTO> findAllDentist() {
+    public Collection<DentistDTO> findAllDentist() {
         List<Dentist> dentists = dentistRepository.findAll();
         Set<DentistDTO> dentistDTO = new HashSet<>();
 

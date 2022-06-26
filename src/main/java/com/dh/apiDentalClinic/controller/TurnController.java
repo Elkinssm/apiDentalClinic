@@ -1,8 +1,8 @@
 package com.dh.apiDentalClinic.controller;
 
 import com.dh.apiDentalClinic.DTO.TurnDTO;
+import com.dh.apiDentalClinic.DTO.TurnResponseDTO;
 import com.dh.apiDentalClinic.service.ITurnService;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class TurnController {
     ITurnService iTurnService;
 
     @GetMapping("/all")
-    public Collection<TurnDTO> getAllTurn() {
+    public Collection<TurnResponseDTO> getAllTurn() {
         return iTurnService.findAllTurns();
     }
 

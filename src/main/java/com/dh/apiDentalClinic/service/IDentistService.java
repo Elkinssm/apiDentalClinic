@@ -6,13 +6,14 @@ import com.dh.apiDentalClinic.entity.Dentist;
 import com.dh.apiDentalClinic.entity.Turn;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
 
 public interface IDentistService {
 
-    Set<DentistDTO> findAllDentist();
+    Collection<DentistDTO> findAllDentist();
 
     Optional<DentistDTO> findDentistById(Long id);
 

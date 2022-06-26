@@ -8,6 +8,7 @@ import com.dh.apiDentalClinic.entity.Turn;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 
 public interface IAddressService {
 
-    Set<AddressDTO> findAllAddress();
+    Collection<AddressDTO> findAllAddress();
 
     Optional<AddressDTO> findAddressById(Long id);
 

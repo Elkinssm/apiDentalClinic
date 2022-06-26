@@ -10,11 +10,12 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+
 public class TurnDTO {
     private Long id;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Dentist dentist;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Patient patient;
+    private Long dentist_id;
+    private Long patient_id;
+//    private Dentist dentist;
+//    private Patient patient;
     private String date;
 }

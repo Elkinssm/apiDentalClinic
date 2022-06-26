@@ -25,6 +25,7 @@ public class PatientController {
     @GetMapping("/all")
     public Collection<PatientDTO> getAllPatients() {
         return patientService.findAllPatients();
+
     }
 
     @GetMapping("/{id}")
