@@ -22,7 +22,7 @@ public class AddressController {
     }
 
     @GetMapping("/{id}")
-    public Optional<AddressDTO> getAddress(@PathVariable Long id) {
+    public AddressDTO getAddress(@PathVariable Long id) {
         return addressService.findAddressById(id);
     }
 

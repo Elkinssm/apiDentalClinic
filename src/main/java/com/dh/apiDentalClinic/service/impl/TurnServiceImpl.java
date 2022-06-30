@@ -2,9 +2,11 @@ package com.dh.apiDentalClinic.service.impl;
 
 import com.dh.apiDentalClinic.DTO.TurnDTO;
 import com.dh.apiDentalClinic.DTO.TurnResponseDTO;
+import com.dh.apiDentalClinic.entity.Address;
 import com.dh.apiDentalClinic.entity.Dentist;
 import com.dh.apiDentalClinic.entity.Patient;
 import com.dh.apiDentalClinic.entity.Turn;
+import com.dh.apiDentalClinic.repository.IAddressRepository;
 import com.dh.apiDentalClinic.repository.IDentistRepository;
 import com.dh.apiDentalClinic.repository.IPatientRepository;
 import com.dh.apiDentalClinic.repository.ITurnRepository;
@@ -13,7 +15,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class TurnServiceImpl implements ITurnService {
@@ -26,15 +31,29 @@ public class TurnServiceImpl implements ITurnService {
     private IDentistRepository dentistRepository;
 
     @Autowired
+    private IAddressRepository addressRepository;
+
+    @Autowired
     ObjectMapper mapper;
 
     public void saveMethod(TurnDTO turnDTO) {
-        Optional<Dentist> dentistOptional = dentistRepository.findById(turnDTO.getDentist_id());
-        Optional<Patient> patientOptional = patientRepository.findById(turnDTO.getPatient_id());
+        Dentist dentist = dentistRepository.findById(turnDTO.getDentist_id()).orElseThrow();
+        Patient patient = patientRepository.findById(turnDTO.getPatient_id()).orElseThrow();
+
         Turn turn = mapper.convertValue(turnDTO, Turn.class);
-        patientOptional.ifPresent(turn::setPatient);
-        dentistOptional.ifPresent(turn::setDentist);
+        //  addressRepository.save(address);
+        if (dentist != null) {
+            turn.setDentist(dentist);
+        }
+        if (patient != null) {
+            turn.setPatient(patient);
+        }
+
+//        patientOptional.ifPresent(turn::setPatient);
+//        dentistOptional.ifPresent(turn::setDentist);
         turnRepository.save(turn);
+
+
     }
 
     @Override
@@ -42,13 +61,26 @@ public class TurnServiceImpl implements ITurnService {
         List<Turn> turns = turnRepository.findAll();
         Set<TurnResponseDTO> turnResponseDTO = new HashSet<>();
 
+
         for (Turn turn : turns) {
             Long patientId = turn.getPatient().getId();
-            Optional<Patient> patientOptional = patientRepository.findById(turn.getPatient().getId());
-            Optional<Dentist> dentistOptional = dentistRepository.findById(turn.getDentist().getId());
+            Patient patient = patientRepository.findById(turn.getPatient().getId()).orElseThrow();
+            Dentist dentist = dentistRepository.findById(turn.getDentist().getId()).orElseThrow();
+            Address address = addressRepository.findById(patient.getId()).orElseThrow();
 
-            patientOptional.ifPresent(turn::setPatient);
-            dentistOptional.ifPresent(turn::setDentist);
+            if (patient != null) {
+                patient.setAddress(address);
+                 turn.setPatient(patient);
+            }
+
+            if (dentist != null) {
+                turn.setDentist(dentist);
+            }
+
+            if (patient.getAddress() != null) {
+                turn.setPatient(patient);
+            }
+//
             turnResponseDTO.add(mapper.convertValue(turn, TurnResponseDTO.class));
         }
         return turnResponseDTO;
@@ -56,13 +88,11 @@ public class TurnServiceImpl implements ITurnService {
     }
 
     @Override
-    public Optional<TurnDTO> findTurnById(Long id) {
-        Optional<Turn> turn = turnRepository.findById(id);
+    public TurnDTO findTurnById(Long id) {
+        Turn turn = turnRepository.findById(id).orElseThrow();
         TurnDTO turnDTO = null;
-        if (turn.isPresent()) {
-            turnDTO = mapper.convertValue(turn, TurnDTO.class);
-        }
-        return Optional.ofNullable(turnDTO);
+        turnDTO = mapper.convertValue(turn, TurnDTO.class);
+        return turnDTO;
     }
 
     @Override

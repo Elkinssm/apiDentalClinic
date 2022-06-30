@@ -29,7 +29,7 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    public Optional<PatientDTO> getPatient(@PathVariable Long id) {
+    public PatientDTO getPatient(@PathVariable Long id) {
         return patientService.findPatientById(id);
     }
 

@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @RequestMapping("/turn")
 @RestController
@@ -23,7 +22,7 @@ public class TurnController {
     }
 
     @GetMapping("/{id}")
-    public Optional<TurnDTO> getTurn(@PathVariable Long id) {
+    public TurnDTO getTurn(@PathVariable Long id) {
         return iTurnService.findTurnById(id);
     }
 

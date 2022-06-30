@@ -35,13 +35,13 @@ public class AddressServiceImpl implements IAddressService {
     }
 
     @Override
-    public Optional<AddressDTO> findAddressById(Long id) {
-        Optional<Address> address = addressRepository.findById(id);
+    public AddressDTO findAddressById(Long id) {
+        Address address = addressRepository.findById(id).orElseThrow();
         AddressDTO addressDTO = null;
-        if (address.isPresent()) {
+        if (address.getId()!=null) {
             addressDTO = mapper.convertValue(address, AddressDTO.class);
         }
-        return Optional.ofNullable(addressDTO);
+        return addressDTO;
     }
 
     @Override

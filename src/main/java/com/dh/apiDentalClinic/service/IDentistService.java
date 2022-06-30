@@ -14,8 +14,7 @@ import java.util.Set;
 public interface IDentistService {
 
     Collection<DentistDTO> findAllDentist();
-
-    Optional<DentistDTO> findDentistById(Long id);
+    DentistDTO findDentistById(Long id);
 
     void saveDentist(DentistDTO newDentistDTO);
 

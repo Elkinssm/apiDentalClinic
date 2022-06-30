@@ -46,11 +46,13 @@ public class PatientServiceImpl implements IPatientService {
         //List<PatientDTO> patientDto= mapper.convertValue (<List<Patient> , List< PatientDTO.class>>(patients))
 
         for (Patient patient : patients) {
-            Optional<Address> addressOptional = addressRepository.findById(patient.getId());
+            Address address = addressRepository.findById(patient.getId()).orElseThrow();
 //            if (addressOptional.isPresent()) {
 //                patient.setAddress(addressOptional.get());
 //            }
-            addressOptional.ifPresent(patient::setAddress);
+            if(address != null) {
+                patient.setAddress(address);
+            }
 
             patientsDTO.add(mapper.convertValue(patient, PatientDTO.class));
         }
@@ -59,13 +61,14 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     @Override
-    public Optional<PatientDTO> findPatientById(Long id) {
-        Optional<Patient> patient = patientRepository.findById(id);
+    public PatientDTO findPatientById(Long id) {
+
+        Patient patient = patientRepository.findById(id).orElseThrow();
         PatientDTO patientDTO = null;
-        if (patient.isPresent()) {
+        if (patient !=null) {
             patientDTO = mapper.convertValue(patient, PatientDTO.class);
         }
-        return Optional.ofNullable(patientDTO);
+        return patientDTO;
     }
 
     @Override

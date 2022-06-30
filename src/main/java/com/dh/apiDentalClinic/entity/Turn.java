@@ -2,12 +2,14 @@ package com.dh.apiDentalClinic.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 
 @ToString
+@NonNull
 @Setter
 @Getter
 @Entity
@@ -23,18 +25,18 @@ public class Turn {
 
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     @JoinColumn(name = "dentist_id",referencedColumnName = "id")
     private Dentist dentist;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
 
     private String date;
 
-    private Long dentista;
-    private Long paciente;
+//    private Long dentista;
+//    private Long paciente;
 }

@@ -12,7 +12,7 @@ public interface IPatientService {
 
     Collection<PatientDTO> findAllPatients();
 
-    Optional<PatientDTO> findPatientById(Long id);
+    PatientDTO findPatientById(Long id);
 
     void savePatient(PatientDTO newPatientDTO);
 

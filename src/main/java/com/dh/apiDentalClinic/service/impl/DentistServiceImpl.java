@@ -37,13 +37,13 @@ public class DentistServiceImpl implements IDentistService {
     }
 
     @Override
-    public Optional<DentistDTO> findDentistById(Long id) {
-        Optional<Dentist> dentist = dentistRepository.findById(id);
+    public DentistDTO findDentistById(Long id) {
+        Dentist dentist = dentistRepository.findById(id).orElseThrow();
         DentistDTO dentistDTO = null;
-        if (dentist.isPresent()) {
+        if (dentist != null) {
             dentistDTO = mapper.convertValue(dentist, DentistDTO.class);
         }
-        return Optional.ofNullable(dentistDTO);
+        return dentistDTO;
     }
 
     @Override

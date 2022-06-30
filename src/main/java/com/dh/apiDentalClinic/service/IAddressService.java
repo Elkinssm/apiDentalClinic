@@ -18,7 +18,7 @@ public interface IAddressService {
 
     Collection<AddressDTO> findAllAddress();
 
-    Optional<AddressDTO> findAddressById(Long id);
+    AddressDTO findAddressById(Long id);
 
     void saveAdrress(AddressDTO newAddressDTO);
 

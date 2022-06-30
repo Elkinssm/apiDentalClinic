@@ -26,7 +26,7 @@ public class Patient {
     private String DNI;
    // @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private String admissionsDate;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     @ToString.Exclude
     private Address address;

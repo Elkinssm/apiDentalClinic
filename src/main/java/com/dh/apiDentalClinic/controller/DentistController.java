@@ -22,7 +22,7 @@ public class DentistController {
     }
 
     @GetMapping("/{id}")
-    public Optional<DentistDTO> getDentist(@PathVariable Long id) {
+    public DentistDTO getDentist(@PathVariable Long id) {
         return iDentistService.findDentistById(id);
     }
 
