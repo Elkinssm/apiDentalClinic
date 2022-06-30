@@ -39,7 +39,6 @@ public class TurnServiceImpl implements ITurnService {
     public void saveMethod(TurnDTO turnDTO) {
         Dentist dentist = dentistRepository.findById(turnDTO.getDentist_id()).orElseThrow();
         Patient patient = patientRepository.findById(turnDTO.getPatient_id()).orElseThrow();
-
         Turn turn = mapper.convertValue(turnDTO, Turn.class);
         //  addressRepository.save(address);
         if (dentist != null) {

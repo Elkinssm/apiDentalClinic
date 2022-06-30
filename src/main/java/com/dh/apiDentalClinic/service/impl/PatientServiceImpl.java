@@ -11,7 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class PatientServiceImpl implements IPatientService {
@@ -28,11 +31,12 @@ public class PatientServiceImpl implements IPatientService {
     public void saveMethod(PatientDTO patientDTO) {
         AddressDTO addressdto = patientDTO.getAddress();
         Patient patient = mapper.convertValue(patientDTO, Patient.class);
-        patient.setAddress(null);
-        patientRepository.save(patient);
         Address address = mapper.convertValue(addressdto, Address.class);
         address.setId(patient.getId());
-        addressRepository.save(address);
+        if (patient.getAddress() == null) {
+            patient.setAddress(address);
+        }
+        patientRepository.save(patient);
 
     }
 
@@ -50,7 +54,7 @@ public class PatientServiceImpl implements IPatientService {
 //            if (addressOptional.isPresent()) {
 //                patient.setAddress(addressOptional.get());
 //            }
-            if(address != null) {
+            if (address != null) {
                 patient.setAddress(address);
             }
 
@@ -65,7 +69,7 @@ public class PatientServiceImpl implements IPatientService {
 
         Patient patient = patientRepository.findById(id).orElseThrow();
         PatientDTO patientDTO = null;
-        if (patient !=null) {
+        if (patient != null) {
             patientDTO = mapper.convertValue(patient, PatientDTO.class);
         }
         return patientDTO;
