@@ -2,13 +2,17 @@ package com.dh.apiDentalClinic.service.impl;
 
 import com.dh.apiDentalClinic.DTO.DentistDTO;
 import com.dh.apiDentalClinic.entity.Dentist;
+import com.dh.apiDentalClinic.exception.ResourceNotFoundException;
 import com.dh.apiDentalClinic.repository.IDentistRepository;
 import com.dh.apiDentalClinic.service.IDentistService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class DentistServiceImpl implements IDentistService {
@@ -20,8 +24,13 @@ public class DentistServiceImpl implements IDentistService {
     ObjectMapper mapper;
 
     public void saveMethod(DentistDTO dentistDTO) {
-        Dentist dentist = mapper.convertValue(dentistDTO, Dentist.class);
-        dentistRepository.save(dentist);
+        if (dentistDTO != null) {
+            Dentist dentist = mapper.convertValue(dentistDTO, Dentist.class);
+            dentistRepository.save(dentist);
+        } else {
+            throw new ResourceNotFoundException("Dentist", "id", "id not found: " + dentistDTO.getId());
+        }
+
     }
 
     @Override
@@ -38,7 +47,7 @@ public class DentistServiceImpl implements IDentistService {
 
     @Override
     public DentistDTO findDentistById(Long id) {
-        Dentist dentist = dentistRepository.findById(id).orElseThrow();
+        Dentist dentist = dentistRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dentist", "id", "id not found: " + id));
         DentistDTO dentistDTO = null;
         if (dentist != null) {
             dentistDTO = mapper.convertValue(dentist, DentistDTO.class);
@@ -53,7 +62,9 @@ public class DentistServiceImpl implements IDentistService {
 
     @Override
     public void deleteDentist(Long id) {
+        Dentist dentist = dentistRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dentist", "id", "id not found: " + id));
         dentistRepository.deleteById(id);
+
 
     }
 

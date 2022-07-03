@@ -2,14 +2,15 @@ package com.dh.apiDentalClinic.controller;
 
 import com.dh.apiDentalClinic.DTO.DentistDTO;
 import com.dh.apiDentalClinic.service.IDentistService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Optional;
 
+@Tag(name = "Dentist", description = "Operations related to dentists")
 @RequestMapping("/dentist")
 @RestController
 public class DentistController {
@@ -17,32 +18,44 @@ public class DentistController {
     IDentistService iDentistService;
 
     @GetMapping("/all")
-    public Collection<DentistDTO> getAllTurn() {
-        return iDentistService.findAllDentist();
+    public ResponseEntity<Collection<DentistDTO>> getAllTurn() {
+        return ResponseEntity.ok(iDentistService.findAllDentist());
     }
 
     @GetMapping("/{id}")
-    public DentistDTO getDentist(@PathVariable Long id) {
-        return iDentistService.findDentistById(id);
+    public ResponseEntity<?> getDentist(@PathVariable Long id) {
+        DentistDTO dentistDTO = iDentistService.findDentistById(id);
+        return ResponseEntity.ok(dentistDTO);
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> saveDentist(@RequestBody DentistDTO dentistDTO) {
         iDentistService.saveDentist(dentistDTO);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return ResponseEntity.ok("Dentist created successfully!!");
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateDentist(@RequestBody DentistDTO dentistDTO) {
-        iDentistService.updateDentist(dentistDTO);
-        return ResponseEntity.ok(HttpStatus.OK);
+        ResponseEntity<String> response;
+        if (iDentistService.findDentistById(dentistDTO.getId()) != null) {
+            iDentistService.updateDentist(dentistDTO);
+            response = ResponseEntity.ok("Update dentist");
+        } else {
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTurn(@PathVariable Long id) {
-        iDentistService.deleteDentist(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        ResponseEntity<String> response;
+        if (iDentistService.findDentistById(id) != null) {
+            iDentistService.deleteDentist(id);
+            response = ResponseEntity.ok("Deleted dentist with id: " + id);
+        } else {
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return response;
     }
-
-
 }

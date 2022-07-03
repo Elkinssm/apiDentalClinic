@@ -15,7 +15,5 @@ public class TurnDTO {
     private Long id;
     private Long dentist_id;
     private Long patient_id;
-//    private Dentist dentist;
-//    private Patient patient;
-    private String date;
+private String date;
 }

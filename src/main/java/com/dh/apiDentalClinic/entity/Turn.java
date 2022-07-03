@@ -27,16 +27,16 @@ public class Turn {
 
     @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     @JoinColumn(name = "dentist_id",referencedColumnName = "id")
+    @ToString.Exclude
     private Dentist dentist;
 
 
     @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Patient patient;
 
 
     private String date;
 
-//    private Long dentista;
-//    private Long paciente;
 }

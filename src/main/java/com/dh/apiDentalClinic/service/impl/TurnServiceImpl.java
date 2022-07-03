@@ -6,6 +6,7 @@ import com.dh.apiDentalClinic.entity.Address;
 import com.dh.apiDentalClinic.entity.Dentist;
 import com.dh.apiDentalClinic.entity.Patient;
 import com.dh.apiDentalClinic.entity.Turn;
+import com.dh.apiDentalClinic.exception.ResourceNotFoundException;
 import com.dh.apiDentalClinic.repository.IAddressRepository;
 import com.dh.apiDentalClinic.repository.IDentistRepository;
 import com.dh.apiDentalClinic.repository.IPatientRepository;
@@ -46,10 +47,10 @@ public class TurnServiceImpl implements ITurnService {
         }
         if (patient != null) {
             turn.setPatient(patient);
+        } else {
+            throw new ResourceNotFoundException("Turn", "id","id not found: " + turnDTO.getId());
         }
 
-//        patientOptional.ifPresent(turn::setPatient);
-//        dentistOptional.ifPresent(turn::setDentist);
         turnRepository.save(turn);
 
 
@@ -63,13 +64,13 @@ public class TurnServiceImpl implements ITurnService {
 
         for (Turn turn : turns) {
             Long patientId = turn.getPatient().getId();
-            Patient patient = patientRepository.findById(turn.getPatient().getId()).orElseThrow();
-            Dentist dentist = dentistRepository.findById(turn.getDentist().getId()).orElseThrow();
-            Address address = addressRepository.findById(patient.getId()).orElseThrow();
+            Patient patient = patientRepository.findById(turn.getPatient().getId()).orElseThrow(() -> new ResourceNotFoundException("Patient", "Id","id not found: " + patientId));
+            Dentist dentist = dentistRepository.findById(turn.getDentist().getId()).orElseThrow(() -> new ResourceNotFoundException("Dentist", "Id", "id not found: " +patientId));
+            Address address = addressRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException("Address", "Id", "id not found: " +patientId));
 
             if (patient != null) {
                 patient.setAddress(address);
-                 turn.setPatient(patient);
+                turn.setPatient(patient);
             }
 
             if (dentist != null) {
@@ -88,7 +89,7 @@ public class TurnServiceImpl implements ITurnService {
 
     @Override
     public TurnDTO findTurnById(Long id) {
-        Turn turn = turnRepository.findById(id).orElseThrow();
+        Turn turn = turnRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Turn", "Id", "id not found: " + id));
         TurnDTO turnDTO = null;
         turnDTO = mapper.convertValue(turn, TurnDTO.class);
         return turnDTO;
@@ -102,6 +103,7 @@ public class TurnServiceImpl implements ITurnService {
 
     @Override
     public void deleteTurn(Long id) {
+        Turn turn = turnRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Turn", "id", "id not found: " +id));
         turnRepository.deleteById(id);
     }
 

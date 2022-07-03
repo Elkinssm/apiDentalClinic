@@ -2,13 +2,17 @@ package com.dh.apiDentalClinic.service.impl;
 
 import com.dh.apiDentalClinic.DTO.AddressDTO;
 import com.dh.apiDentalClinic.entity.Address;
+import com.dh.apiDentalClinic.exception.ResourceNotFoundException;
 import com.dh.apiDentalClinic.repository.IAddressRepository;
 import com.dh.apiDentalClinic.service.IAddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class AddressServiceImpl implements IAddressService {
@@ -20,8 +24,13 @@ public class AddressServiceImpl implements IAddressService {
     ObjectMapper mapper;
 
     public void saveMethod(AddressDTO addressDTO) {
-        Address address = mapper.convertValue(addressDTO, Address.class);
-        addressRepository.save(address);
+        if (addressDTO != null) {
+            Address address = mapper.convertValue(addressDTO, Address.class);
+            addressRepository.save(address);
+        } else {
+            throw new ResourceNotFoundException("Address", "id", "id not found");
+        }
+
     }
 
     @Override
@@ -36,9 +45,9 @@ public class AddressServiceImpl implements IAddressService {
 
     @Override
     public AddressDTO findAddressById(Long id) {
-        Address address = addressRepository.findById(id).orElseThrow();
+        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Address", "id", "id not found: " + id));
         AddressDTO addressDTO = null;
-        if (address.getId()!=null) {
+        if (address.getId() != null) {
             addressDTO = mapper.convertValue(address, AddressDTO.class);
         }
         return addressDTO;
@@ -51,6 +60,7 @@ public class AddressServiceImpl implements IAddressService {
 
     @Override
     public void deleteAdrress(Long id) {
+        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dentist", "id :", "id not found: " + id));
         addressRepository.deleteById(id);
     }
 

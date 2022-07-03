@@ -4,6 +4,7 @@ import com.dh.apiDentalClinic.DTO.AddressDTO;
 import com.dh.apiDentalClinic.DTO.PatientDTO;
 import com.dh.apiDentalClinic.entity.Address;
 import com.dh.apiDentalClinic.entity.Patient;
+import com.dh.apiDentalClinic.exception.ResourceNotFoundException;
 import com.dh.apiDentalClinic.repository.IAddressRepository;
 import com.dh.apiDentalClinic.repository.IPatientRepository;
 import com.dh.apiDentalClinic.service.IPatientService;
@@ -35,9 +36,10 @@ public class PatientServiceImpl implements IPatientService {
         address.setId(patient.getId());
         if (patient.getAddress() == null) {
             patient.setAddress(address);
+        } else if (patientDTO == null) {
+            throw new ResourceNotFoundException("Patient", "id", "id not found: " + patient.getId());
         }
         patientRepository.save(patient);
-
     }
 
 
@@ -45,15 +47,9 @@ public class PatientServiceImpl implements IPatientService {
     public Collection<PatientDTO> findAllPatients() {
         List<Patient> patients = patientRepository.findAll();
         Set<PatientDTO> patientsDTO = new HashSet<>();
-
-
-        //List<PatientDTO> patientDto= mapper.convertValue (<List<Patient> , List< PatientDTO.class>>(patients))
-
         for (Patient patient : patients) {
-            Address address = addressRepository.findById(patient.getId()).orElseThrow();
-//            if (addressOptional.isPresent()) {
-//                patient.setAddress(addressOptional.get());
-//            }
+            Address address = addressRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException("Pacientes", "pacientes","id not found: " + patient.getId()));
+
             if (address != null) {
                 patient.setAddress(address);
             }
@@ -67,7 +63,7 @@ public class PatientServiceImpl implements IPatientService {
     @Override
     public PatientDTO findPatientById(Long id) {
 
-        Patient patient = patientRepository.findById(id).orElseThrow();
+        Patient patient = patientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Patient", "id", "id not found: " + id));
         PatientDTO patientDTO = null;
         if (patient != null) {
             patientDTO = mapper.convertValue(patient, PatientDTO.class);
@@ -82,6 +78,7 @@ public class PatientServiceImpl implements IPatientService {
 
     @Override
     public void deletePatient(Long id) {
+         Patient patient = patientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Patient", "id", "id not found: " + id));
         patientRepository.deleteById(id);
     }
 
