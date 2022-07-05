@@ -47,8 +47,8 @@ public class TurnServiceImpl implements ITurnService {
         }
         if (patient != null) {
             turn.setPatient(patient);
-        } else {
-            throw new ResourceNotFoundException("Turn", "id","id not found: " + turnDTO.getId());
+        } else if (dentist == null || patient == null) {
+            throw new ResourceNotFoundException("Turn", "id", "id not found: " + turnDTO.getId());
         }
 
         turnRepository.save(turn);
@@ -64,9 +64,9 @@ public class TurnServiceImpl implements ITurnService {
 
         for (Turn turn : turns) {
             Long patientId = turn.getPatient().getId();
-            Patient patient = patientRepository.findById(turn.getPatient().getId()).orElseThrow(() -> new ResourceNotFoundException("Patient", "Id","id not found: " + patientId));
-            Dentist dentist = dentistRepository.findById(turn.getDentist().getId()).orElseThrow(() -> new ResourceNotFoundException("Dentist", "Id", "id not found: " +patientId));
-            Address address = addressRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException("Address", "Id", "id not found: " +patientId));
+            Patient patient = patientRepository.findById(turn.getPatient().getId()).orElseThrow(() -> new ResourceNotFoundException("Patient", "Id", "id not found: " + patientId));
+            Dentist dentist = dentistRepository.findById(turn.getDentist().getId()).orElseThrow(() -> new ResourceNotFoundException("Dentist", "Id", "id not found: " + patientId));
+            Address address = addressRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException("Address", "Id", "id not found: " + patientId));
 
             if (patient != null) {
                 patient.setAddress(address);
@@ -103,7 +103,7 @@ public class TurnServiceImpl implements ITurnService {
 
     @Override
     public void deleteTurn(Long id) {
-        Turn turn = turnRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Turn", "id", "id not found: " +id));
+        Turn turn = turnRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Turn", "id", "id not found: " + id));
         turnRepository.deleteById(id);
     }
 

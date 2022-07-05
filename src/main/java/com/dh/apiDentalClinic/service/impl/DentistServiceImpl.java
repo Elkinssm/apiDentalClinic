@@ -28,6 +28,7 @@ public class DentistServiceImpl implements IDentistService {
             Dentist dentist = mapper.convertValue(dentistDTO, Dentist.class);
             dentistRepository.save(dentist);
         } else {
+            assert false;
             throw new ResourceNotFoundException("Dentist", "id", "id not found: " + dentistDTO.getId());
         }
 

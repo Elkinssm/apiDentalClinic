@@ -24,7 +24,7 @@ public class AddressServiceImpl implements IAddressService {
     ObjectMapper mapper;
 
     public void saveMethod(AddressDTO addressDTO) {
-        if (addressDTO != null) {
+        if (addressDTO == null) {
             Address address = mapper.convertValue(addressDTO, Address.class);
             addressRepository.save(address);
         } else {

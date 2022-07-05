@@ -2,6 +2,7 @@ package com.dh.apiDentalClinic.controller;
 
 import com.dh.apiDentalClinic.DTO.AddressDTO;
 import com.dh.apiDentalClinic.service.IAddressService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+@Tag(name = "Address", description = "Operations related to address")
 @RequestMapping("/address")
 @RestController
 public class AddressController {
