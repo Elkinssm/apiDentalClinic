@@ -20,7 +20,7 @@ public class TurnController {
 
     @GetMapping("/all")
     public ResponseEntity<Collection<TurnResponseDTO>> getAllTurn() {
-        return ResponseEntity.ok(iTurnService.findAllTurns());
+        return (ResponseEntity<Collection<TurnResponseDTO>>) iTurnService.findAllTurns();
     }
 
     @GetMapping("/{id}")

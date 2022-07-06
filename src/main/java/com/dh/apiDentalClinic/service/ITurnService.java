@@ -1,14 +1,15 @@
 package com.dh.apiDentalClinic.service;
 
+
 import com.dh.apiDentalClinic.DTO.TurnDTO;
 import com.dh.apiDentalClinic.DTO.TurnResponseDTO;
 
-import java.util.Collection;
+import java.util.Set;
 
 
 public interface ITurnService {
 
-    Collection<TurnResponseDTO> findAllTurns();
+    Set<TurnResponseDTO> findAllTurns();
 
     TurnDTO findTurnById(Long id);
 
