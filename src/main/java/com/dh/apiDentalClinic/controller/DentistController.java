@@ -6,6 +6,7 @@ import com.dh.apiDentalClinic.service.IDentistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -21,19 +22,19 @@ public class DentistController {
     public ResponseEntity<Collection<DentistDTO>> getAllTurn() {
         return ResponseEntity.ok(iDentistService.findAllDentist());
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getDentist(@PathVariable Long id) {
         DentistDTO dentistDTO = iDentistService.findDentistById(id);
         return ResponseEntity.ok(dentistDTO);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<?> saveDentist(@RequestBody DentistDTO dentistDTO) {
         iDentistService.saveDentist(dentistDTO);
         return ResponseEntity.ok("Dentist created successfully!!");
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<?> updateDentist(@RequestBody DentistDTO dentistDTO) {
         ResponseEntity<String> response;
@@ -45,7 +46,7 @@ public class DentistController {
         }
         return response;
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTurn(@PathVariable Long id) {
         ResponseEntity<String> response;

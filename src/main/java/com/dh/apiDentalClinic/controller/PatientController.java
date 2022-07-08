@@ -24,19 +24,19 @@ public class PatientController {
         return new ResponseEntity<>(patientService.findAllPatients(),HttpStatus.OK);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getPatient(@PathVariable Long id) {
         PatientDTO patientDTO = patientService.findPatientById(id);
         return new ResponseEntity<>(patientDTO,HttpStatus.OK);
     }
-    //@PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/add")
     public ResponseEntity<?> savePatient(@RequestBody PatientDTO patientDTO) {
         patientService.savePatient(patientDTO);
         return new ResponseEntity<>("Patient added successfully!!",HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping("/update")
     public ResponseEntity<?> updatePatient(@RequestBody PatientDTO patientDTO) {
         ResponseEntity<String> response;
@@ -50,6 +50,7 @@ public class PatientController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN') ")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deletePatient(@PathVariable Long id) {
         ResponseEntity<String> response;

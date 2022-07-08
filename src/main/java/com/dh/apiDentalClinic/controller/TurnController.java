@@ -6,6 +6,7 @@ import com.dh.apiDentalClinic.service.ITurnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -17,23 +18,27 @@ public class TurnController {
     @Autowired
     ITurnService iTurnService;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/all")
     public ResponseEntity<Collection<TurnResponseDTO>> getAllTurn() {
-        return new ResponseEntity<>(iTurnService.findAllTurns(),HttpStatus.OK);
+        return new ResponseEntity<>(iTurnService.findAllTurns(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getTurn(@PathVariable Long id) {
         TurnDTO turnDTO = iTurnService.findTurnById(id);
         return new ResponseEntity<>(turnDTO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/add")
     public ResponseEntity<?> saveTurn(@RequestBody TurnDTO turnDTO) {
         iTurnService.saveTurn(turnDTO);
         return new ResponseEntity<>("Turn created successfully!!", HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping("/update")
     public ResponseEntity<?> updateTurn(@RequestBody TurnDTO turnDTO) {
         ResponseEntity<String> response;
@@ -47,6 +52,7 @@ public class TurnController {
         return response;
     }
 
+    @PreAuthorize("hasRole('ADMIN') ")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTurn(@PathVariable Long id) {
         ResponseEntity<String> response;

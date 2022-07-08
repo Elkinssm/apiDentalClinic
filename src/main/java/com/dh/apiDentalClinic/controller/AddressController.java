@@ -5,6 +5,7 @@ import com.dh.apiDentalClinic.service.IAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -15,25 +16,25 @@ import java.util.Collection;
 public class AddressController {
     @Autowired
     IAddressService addressService;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<Collection<AddressDTO>> getAllAddress() {
 
         return new ResponseEntity<>(addressService.findAllAddress(), HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getAddress(@PathVariable Long id) {
         AddressDTO addressDTO = addressService.findAddressById(id);
         return new ResponseEntity<>(addressDTO, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<?> saveAddress(@RequestBody AddressDTO addressDTO) {
         addressService.saveAdrress(addressDTO);
         return new ResponseEntity<>("Address created successfully!!",HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<?> updateAddress(@RequestBody AddressDTO addressDTO) {
         ResponseEntity<String> response;
@@ -45,7 +46,7 @@ public class AddressController {
         }
         return response;
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAddress(@PathVariable Long id) {
         ResponseEntity<String> response;
