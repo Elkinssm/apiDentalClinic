@@ -2,7 +2,6 @@ package com.dh.apiDentalClinic.controller;
 
 import com.dh.apiDentalClinic.DTO.AddressDTO;
 import com.dh.apiDentalClinic.service.IAddressService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@Tag(name = "Address", description = "Operations related to address")
+
 @RequestMapping("/address")
 @RestController
 public class AddressController {
@@ -20,19 +19,19 @@ public class AddressController {
     @GetMapping("/all")
     public ResponseEntity<Collection<AddressDTO>> getAllAddress() {
 
-        return ResponseEntity.ok(addressService.findAllAddress());
+        return new ResponseEntity<>(addressService.findAllAddress(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getAddress(@PathVariable Long id) {
         AddressDTO addressDTO = addressService.findAddressById(id);
-        return ResponseEntity.ok(addressDTO);
+        return new ResponseEntity<>(addressDTO, HttpStatus.OK);
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> saveAddress(@RequestBody AddressDTO addressDTO) {
         addressService.saveAdrress(addressDTO);
-        return ResponseEntity.ok("Address created successfully!!");
+        return new ResponseEntity<>("Address created successfully!!",HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
@@ -40,9 +39,9 @@ public class AddressController {
         ResponseEntity<String> response;
         if (addressService.findAddressById(addressDTO.getId()) != null) {
             addressService.updateAdrress(addressDTO);
-            response = ResponseEntity.ok("Update address");
+            response = new ResponseEntity<>("Update address", HttpStatus.CREATED);
         } else {
-            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            response = new ResponseEntity<>("Failed to update address, check sent values and id",HttpStatus.BAD_REQUEST);
         }
         return response;
     }
@@ -54,7 +53,7 @@ public class AddressController {
             addressService.deleteAdrress(id);
             response = ResponseEntity.ok("Deleted address with id: " + id);
         } else {
-            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            response = new ResponseEntity<>("It is not find the address with the id: " + id, HttpStatus.NOT_FOUND);
         }
 
         return response;

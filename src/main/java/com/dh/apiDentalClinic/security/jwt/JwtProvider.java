@@ -13,15 +13,17 @@ import java.util.Date;
 public class JwtProvider {
     private final static Logger logger = Logger.getLogger(JwtProvider.class);
 
-    @Value("$(jwt.secret)")
-    private String secret;
-    @Value("$(jwt.expiration)")
-    private int expiration;
+    //@Value("$(jwt.secret)")
+    private String secret = "secret";
+    //@Value("$(jwt.expiration)")
+    private int expiration = 36000;
+
+
 
     public String generateToken(Authentication authentication) {
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
         return Jwts.builder().setSubject(principalUser.getNameUser())
-                .setExpiration(new Date(new Date().getTime() + expiration * 1000))
+                .setExpiration(new Date(new Date().getTime() + expiration * 1000L))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }

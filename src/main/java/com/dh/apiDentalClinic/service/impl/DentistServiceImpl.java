@@ -28,7 +28,6 @@ public class DentistServiceImpl implements IDentistService {
             Dentist dentist = mapper.convertValue(dentistDTO, Dentist.class);
             dentistRepository.save(dentist);
         } else {
-            assert false;
             throw new ResourceNotFoundException("Dentist", "id", "id not found: " + dentistDTO.getId());
         }
 
@@ -48,7 +47,7 @@ public class DentistServiceImpl implements IDentistService {
 
     @Override
     public DentistDTO findDentistById(Long id) {
-        Dentist dentist = dentistRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dentist", "id", "id not found: " + id));
+        Dentist dentist = dentistRepository.findById(id).get();
         DentistDTO dentistDTO = null;
         if (dentist != null) {
             dentistDTO = mapper.convertValue(dentist, DentistDTO.class);
@@ -63,7 +62,7 @@ public class DentistServiceImpl implements IDentistService {
 
     @Override
     public void deleteDentist(Long id) {
-        Dentist dentist = dentistRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dentist", "id", "id not found: " + id));
+        Dentist dentist = dentistRepository.findById(id).get();
         dentistRepository.deleteById(id);
 
 

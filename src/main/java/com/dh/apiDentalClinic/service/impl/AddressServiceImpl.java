@@ -45,7 +45,7 @@ public class AddressServiceImpl implements IAddressService {
 
     @Override
     public AddressDTO findAddressById(Long id) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Address", "id", "id not found: " + id));
+        Address address = addressRepository.findById(id).get();
         AddressDTO addressDTO = null;
         if (address.getId() != null) {
             addressDTO = mapper.convertValue(address, AddressDTO.class);
@@ -60,7 +60,7 @@ public class AddressServiceImpl implements IAddressService {
 
     @Override
     public void deleteAdrress(Long id) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dentist", "id :", "id not found: " + id));
+        Address address = addressRepository.findById(id).get();
         addressRepository.deleteById(id);
     }
 

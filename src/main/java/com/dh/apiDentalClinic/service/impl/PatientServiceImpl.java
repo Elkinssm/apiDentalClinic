@@ -48,7 +48,7 @@ public class PatientServiceImpl implements IPatientService {
         List<Patient> patients = patientRepository.findAll();
         Set<PatientDTO> patientsDTO = new HashSet<>();
         for (Patient patient : patients) {
-            Address address = addressRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException("Pacientes", "pacientes", "id not found: " + patient.getId()));
+            Address address = addressRepository.findById(patient.getId()).get();
 
             if (address != null) {
                 patient.setAddress(address);
@@ -63,7 +63,7 @@ public class PatientServiceImpl implements IPatientService {
     @Override
     public PatientDTO findPatientById(Long id) {
 
-        Patient patient = patientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Patient", "id", "id not found: " + id));
+        Patient patient = patientRepository.findById(id).get();
         PatientDTO patientDTO = null;
         if (patient != null) {
             patientDTO = mapper.convertValue(patient, PatientDTO.class);
@@ -78,7 +78,7 @@ public class PatientServiceImpl implements IPatientService {
 
     @Override
     public void deletePatient(Long id) {
-        Patient patient = patientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Patient", "id", "id not found: " + id));
+        Patient patient = patientRepository.findById(id).get();
         patientRepository.deleteById(id);
     }
 

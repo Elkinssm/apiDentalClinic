@@ -1,5 +1,6 @@
 package com.dh.apiDentalClinic.security.controller;
 
+import com.dh.apiDentalClinic.exception.ResourceNotFoundException;
 import com.dh.apiDentalClinic.security.entity.DTO.JwtDTO;
 import com.dh.apiDentalClinic.security.entity.DTO.LoginDTO;
 import com.dh.apiDentalClinic.security.entity.DTO.RegisterDTO;
@@ -48,21 +49,21 @@ public class AuthController {
     @PostMapping("/new")
     public ResponseEntity<?> newUser(@Valid @RequestBody RegisterDTO registerDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Wrong values entered or invalid email",HttpStatus.BAD_REQUEST);
         if (userService.existsByUserName(registerDTO.getUserName()))
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Username already exists",HttpStatus.BAD_REQUEST);
         if (userService.existsByEmail(registerDTO.getEmail()))
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Email already exists",HttpStatus.BAD_REQUEST);
         User user =
                 new User(registerDTO.getName(), registerDTO.getUserName(), registerDTO.getEmail(),
                         passwordEncoder.encode(registerDTO.getPassword()));
         Set<Rol> rols = new HashSet<>();
         rols.add(rolService.getByNameRol(NameRol.ROLE_USER).get());
         if (registerDTO.getRoles().contains("admin"))
-            rols.add(rolService.getByNameRol(NameRol.ROLE_USER).get());
+            rols.add(rolService.getByNameRol(NameRol.ROLE_ADMIN).get());
         user.setRoles(rols);
         userService.save(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>("User created successfully!!",HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
@@ -75,7 +76,7 @@ public class AuthController {
         String jwt = jwtProvider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         JwtDTO jwtDTO = new JwtDTO(jwt, userDetails.getUsername(),userDetails.getAuthorities());
-        return new ResponseEntity(jwtDTO,HttpStatus.OK);
+        return new ResponseEntity<>(jwtDTO,HttpStatus.OK);
     }
 
 

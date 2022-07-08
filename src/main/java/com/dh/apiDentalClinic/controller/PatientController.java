@@ -3,15 +3,16 @@ package com.dh.apiDentalClinic.controller;
 
 import com.dh.apiDentalClinic.DTO.PatientDTO;
 import com.dh.apiDentalClinic.service.IPatientService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@Tag(name = "Patients", description = "Operations related to patients")
+
 @RestController
 @RequestMapping("/patient")
 public class PatientController {
@@ -20,19 +21,20 @@ public class PatientController {
 
     @GetMapping("/all")
     public ResponseEntity<Collection<PatientDTO>> getAllPatients() {
-        return ResponseEntity.ok(patientService.findAllPatients());
+        return new ResponseEntity<>(patientService.findAllPatients(),HttpStatus.OK);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPatient(@PathVariable Long id) {
         PatientDTO patientDTO = patientService.findPatientById(id);
-        return ResponseEntity.ok(patientDTO);
+        return new ResponseEntity<>(patientDTO,HttpStatus.OK);
     }
-
+    //@PreAuthorize("hasRole('USER')")
     @PostMapping("/add")
     public ResponseEntity<?> savePatient(@RequestBody PatientDTO patientDTO) {
         patientService.savePatient(patientDTO);
-        return ResponseEntity.ok("Patient added successfully!!");
+        return new ResponseEntity<>("Patient added successfully!!",HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
@@ -40,9 +42,9 @@ public class PatientController {
         ResponseEntity<String> response;
         if (patientService.findPatientById(patientDTO.getId()) != null) {
             patientService.updatePatient(patientDTO);
-            response= ResponseEntity.ok("Update patient");
+            response=new ResponseEntity<>("Update patient",HttpStatus.CREATED);
         } else {
-            response= new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            response= new ResponseEntity<>("Failed to update address, check sent values and id",HttpStatus.BAD_REQUEST);
         }
         return response;
 
@@ -53,9 +55,9 @@ public class PatientController {
         ResponseEntity<String> response;
         if (patientService.findPatientById(id) != null) {
             patientService.deletePatient(id);
-            response = ResponseEntity.ok("Deleted patient with id: " + id);
+            response = new ResponseEntity<>("Deleted patient with id: " + id,HttpStatus.OK);
         } else {
-            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            response = new ResponseEntity<>("It is not find the patient with the id: " + id,HttpStatus.NOT_FOUND);
         }
 
         return response;
