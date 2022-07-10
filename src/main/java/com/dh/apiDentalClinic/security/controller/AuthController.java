@@ -10,6 +10,8 @@ import com.dh.apiDentalClinic.security.enums.NameRol;
 import com.dh.apiDentalClinic.security.jwt.JwtProvider;
 import com.dh.apiDentalClinic.security.service.RolService;
 import com.dh.apiDentalClinic.security.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
-
+@Tag(name = "Authentication", description = "Operations about authentications users")
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
@@ -46,6 +48,7 @@ public class AuthController {
     @Autowired
     JwtProvider jwtProvider;
 
+    @Operation(summary = "Register new user")
     @PostMapping("/new")
     public ResponseEntity<?> newUser(@Valid @RequestBody RegisterDTO registerDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
@@ -65,7 +68,7 @@ public class AuthController {
         userService.save(user);
         return new ResponseEntity<>("User created successfully!!",HttpStatus.CREATED);
     }
-
+    @Operation(summary = "Login a existing user")
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> login(@Valid @RequestBody LoginDTO loginDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors())

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @ToString
 @NonNull
@@ -37,6 +38,6 @@ public class Turn {
     private Patient patient;
 
 
-    private String date;
+    private Date date;
 
 }

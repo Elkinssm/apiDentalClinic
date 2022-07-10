@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -25,7 +26,7 @@ public class Patient {
     private String lastName;
     private String DNI;
    // @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private String admissionsDate;
+    private Date admissionsDate;
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     @ToString.Exclude

@@ -2,6 +2,10 @@ package com.dh.apiDentalClinic.controller;
 
 import com.dh.apiDentalClinic.DTO.AddressDTO;
 import com.dh.apiDentalClinic.service.IAddressService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,30 +14,44 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+import static io.swagger.v3.oas.annotations.enums.ParameterIn.HEADER;
 
+@Tag(name = "Address", description = "Operations about address")
 @RequestMapping("/address")
 @RestController
 public class AddressController {
     @Autowired
     IAddressService addressService;
+    @Operation(summary = "Find all address")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<Collection<AddressDTO>> getAllAddress() {
 
         return new ResponseEntity<>(addressService.findAllAddress(), HttpStatus.OK);
     }
+
+
+    @Operation(summary = "Find address by id")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getAddress(@PathVariable Long id) {
         AddressDTO addressDTO = addressService.findAddressById(id);
         return new ResponseEntity<>(addressDTO, HttpStatus.OK);
     }
+
+    @Operation(summary = "Add new address to the dental clinic",
+            parameters = @Parameter(name = "Authorization", in = HEADER, description = "Json web token required", required = true),
+            security = @SecurityRequirement(name = "jwtAuth"))
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<?> saveAddress(@RequestBody AddressDTO addressDTO) {
         addressService.saveAdrress(addressDTO);
         return new ResponseEntity<>("Address created successfully!!",HttpStatus.CREATED);
     }
+
+    @Operation(summary = "Update an existing address",
+            parameters = @Parameter(name = "Authorization", in = HEADER, description = "Json web token required", required = true),
+            security = @SecurityRequirement(name = "jwtAuth"))
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<?> updateAddress(@RequestBody AddressDTO addressDTO) {
@@ -46,6 +64,10 @@ public class AddressController {
         }
         return response;
     }
+
+    @Operation(summary = "Delete a existing address",
+            parameters = @Parameter(name = "Authorization", in = HEADER, description = "Json web token required", required = true),
+            security = @SecurityRequirement(name = "jwtAuth"))
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteAddress(@PathVariable Long id) {

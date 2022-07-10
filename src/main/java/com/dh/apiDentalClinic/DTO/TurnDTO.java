@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,5 +16,5 @@ public class TurnDTO {
     private Long id;
     private Long dentist_id;
     private Long patient_id;
-private String date;
+private Date date;
 }
