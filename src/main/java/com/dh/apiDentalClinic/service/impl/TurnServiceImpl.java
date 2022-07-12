@@ -1,5 +1,6 @@
 package com.dh.apiDentalClinic.service.impl;
 
+
 import com.dh.apiDentalClinic.DTO.TurnDTO;
 import com.dh.apiDentalClinic.DTO.TurnResponseDTO;
 import com.dh.apiDentalClinic.entity.Address;
@@ -16,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +56,7 @@ public class TurnServiceImpl implements ITurnService {
     }
 
     @Override
-    public Collection<TurnResponseDTO> findAllTurns() {
+    public Set<TurnResponseDTO> findAllTurns() {
         List<Turn> turns = turnRepository.findAll();
         Set<TurnResponseDTO> turnResponseDTO = new HashSet<>();
 

@@ -29,7 +29,9 @@ public class TurnController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/all")
     public ResponseEntity<Collection<TurnResponseDTO>> getAllTurn() {
+
         return new ResponseEntity<>(iTurnService.findAllTurns(), HttpStatus.OK);
+
     }
 
     @Operation(summary = "Find patient by id")
