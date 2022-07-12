@@ -13,5 +13,5 @@ public class TurnResponseDTO {
     private Long id;
     private Dentist dentist;
     private Patient patient;
-    private Date date;
+    private String date;
 }

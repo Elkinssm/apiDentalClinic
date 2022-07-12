@@ -38,6 +38,6 @@ public class Turn {
     private Patient patient;
 
 
-    private Date date;
+    private String date;
 
 }
